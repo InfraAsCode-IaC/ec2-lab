@@ -1,0 +1,60 @@
+name: Terraform Versioning & Lint
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+
+jobs:
+  lint-commits:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Commitlint
+        run: |
+          npm install --save-dev @commitlint/config-conventional @commitlint/cli
+          echo "module.exports = { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
+
+      - name: Validate PR Commits
+        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{
+          github.event.pull_request.head.sha }} --verbose
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: []
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: anothrnick/github-tag-action@1.64.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: |
+            Automatic release for version ${{ steps.tag_version.outputs.new_tag }}
+            Generated from commit: ${{ github.sha }}
+          draft: false
+          prerelease: false
