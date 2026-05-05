@@ -1,6 +1,6 @@
 # Terraform EC2 AWS
 
-Terraform project to desploy an EC2 on AWS
+Terraform project to deploy an EC2 on AWS
 
 ## Prerrequisitos
 
