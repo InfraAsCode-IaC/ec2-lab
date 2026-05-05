@@ -2,9 +2,11 @@ name: Terraform Versioning & Lint
 
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+      - main
   push:
-    branches: [ master ]
+    branches:
+      - main
 
 jobs:
   lint-commits:
@@ -30,7 +32,7 @@ jobs:
           github.event.pull_request.head.sha }} --verbose
 
   release:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: []
     runs-on: ubuntu-latest
     permissions:
