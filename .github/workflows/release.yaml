@@ -48,7 +48,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
-          DEFAULT_BUMP: patch
+          # Removed DEFAULT_BUMP to let conventional commits determine version bump
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
