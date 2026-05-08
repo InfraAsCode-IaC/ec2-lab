@@ -1,0 +1,11 @@
+project_name        = ""
+environment         = ""
+aws_region          = ""
+vpc_cidr            = ""
+public_subnet_cidr  = ""
+private_subnet_cidr = ""
+availability_zone   = ""
+instance_type       = ""
+public_key_path     = ""
+allowed_ssh_ips     = [""] # use your ip
+root_volume_size    = 
