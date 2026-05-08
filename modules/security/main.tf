@@ -3,7 +3,7 @@ resource "aws_security_group" "ec2" {
   description = "Security group for EC2 instance"
   vpc_id      = var.vpc_id
 
-  # SSH — solo desde tus IPs (nunca 0.0.0.0/0 en prod)
+  # SSH — Access restricted to your specific IPs (never 0.0.0.0/0 in production)
   ingress {
     description = "SSH access"
     from_port   = 22
@@ -30,7 +30,7 @@ resource "aws_security_group" "ec2" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Egress abierto (restringe en prod si es necesario)
+  # Open Egress (Restrict in production if required)
   egress {
     from_port   = 0
     to_port     = 0

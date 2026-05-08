@@ -30,7 +30,7 @@ resource "aws_instance" "main" {
   vpc_security_group_ids = var.security_group_ids
   key_name               = aws_key_pair.main.key_name
 
-  # Importante: NO uses instance store — EBS persiste
+  # warning: Not uses instance store — EBS
   root_block_device {
     volume_type           = "gp3"
     volume_size           = var.root_volume_size
@@ -44,7 +44,7 @@ resource "aws_instance" "main" {
     }
   }
 
-  # IMDSv2 obligatorio (protección contra SSRF)
+  # IMDSv2 Enforcement (SSRF Protection)
   metadata_options {
     http_endpoint               = "enabled"
     http_tokens                 = "required"   # IMDSv2
@@ -56,7 +56,7 @@ resource "aws_instance" "main" {
   # user_data = var.user_data_path != "" ? file(var.user_data_path) : null
 
   lifecycle {
-    ignore_changes        = [ami]          # Evita recrear al actualizar AMI
+    ignore_changes        = [ami] 
     create_before_destroy = true
   }
 
@@ -67,7 +67,7 @@ resource "aws_instance" "main" {
   }
 }
 
-# Elastic IP estática
+# Static Elastic IP
 resource "aws_eip" "main" {
   instance = aws_instance.main.id
   domain   = "vpc"
