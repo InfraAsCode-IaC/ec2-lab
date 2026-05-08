@@ -2,6 +2,8 @@
 
 Terraform project designed to deploy an EC2 instance on AWS with a modular, secure, and reproducible architecture.
 
+**Version:** 1.0.0 | [Changelog](CHANGELOG.md) | [Releases](https://github.com/your-org/aws-ec2/releases)
+
 ## Overview
 
 This implementation separates infrastructure into three main modules:
